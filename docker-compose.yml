@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment: { POSTGRES_USER: sv, POSTGRES_PASSWORD: sv, POSTGRES_DB: shikshavani }
+    volumes: [pgdata:/var/lib/postgresql/data]
+  app:
+    build: .
+    depends_on: [db]
+    ports: ["8000:8000"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://sv:sv@db:5432/shikshavani
+      JWT_SECRET: change-me
+      DEMO_MODE: "true"
+      # BHASHINI_USER_ID: ""
+      # BHASHINI_API_KEY: ""
+      # ANTHROPIC_API_KEY: ""
+volumes: { pgdata: {} }

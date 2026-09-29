@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --press: #092A24;
+  --ui-scale: 1;
+}
+
+html { font-size: calc(16px * var(--ui-scale)); -webkit-tap-highlight-color: transparent; }
+body {
+  @apply bg-paper text-ink font-body antialiased;
+  line-height: 1.55;
+  min-height: 100dvh;
+}
+h1, h2, h3, h4 { @apply font-display; line-height: 1.15; letter-spacing: -0.01em; }
+
+:focus-visible { outline: 3px solid #F2B035; outline-offset: 2px; border-radius: 8px; }
+button, a { touch-action: manipulation; }
+
+/* Hand-painted wall-art inspired band (Sohrai / Khovar): used sparingly. */
+.band {
+  height: 14px;
+  background-color: #0E3B32;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='14' viewBox='0 0 44 14'%3E%3Cpath d='M0 11 5.5 3 11 11 16.5 3 22 11 27.5 3 33 11 38.5 3 44 11' fill='none' stroke='%23F2B035' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='5.5' cy='12' r='1.1' fill='%23F1F5EF'/%3E%3Ccircle cx='27.5' cy='12' r='1.1' fill='%23F1F5EF'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+@layer components {
+/* Chunky, pressable buttons for children. Adults get the flatter .btn-* below. */
+.kid-btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-chunk px-5 font-display font-bold select-none;
+  min-height: 56px;
+  box-shadow: 0 4px 0 0 var(--press);
+  transition: transform .08s ease, box-shadow .08s ease, filter .15s;
+}
+.kid-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 0 var(--press); }
+.kid-btn:disabled { opacity: .55; }
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors select-none;
+  min-height: 40px;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary { @apply bg-sal-800 text-white hover:bg-sal-700; }
+.btn-soft { @apply bg-sal-100 text-sal-800 hover:bg-sal-200; }
+.btn-ghost { @apply text-sal-800 hover:bg-sal-100; }
+.btn-danger { @apply bg-madder-500 text-white hover:bg-madder-600; }
+.btn-outline { @apply border border-line bg-white text-sal-800 hover:bg-sal-50; }
+
+.field {
+  @apply w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-[15px] text-ink placeholder:text-mist/70;
+}
+.field:focus { outline: 3px solid #F2B03566; border-color: #E19A12; }
+
+.card { @apply rounded-2xl border border-line bg-white shadow-card; }
+
+}
+
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(194,65,45,.55); } 100% { box-shadow: 0 0 0 10px rgba(194,65,45,0); } }
+.pulse-ring { animation: pulse-ring 1.4s ease-out infinite; }
+
+@keyframes pop { 0% { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+.pop { animation: pop .35s cubic-bezier(.3,1.4,.5,1) both; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise .32s ease both; }
+
+@keyframes shimmer { to { background-position: -200% 0; } }
+.skeleton { background: linear-gradient(90deg, #E3ECE6 25%, #F1F5EF 37%, #E3ECE6 63%); background-size: 200% 100%; animation: shimmer 1.4s infinite linear; border-radius: 12px; }
+
+.safe-b { padding-bottom: max(env(safe-area-inset-bottom), 8px); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+@media print {
+  body { background: #fff; }
+  .no-print { display: none !important; }
+}
